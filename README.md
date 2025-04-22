@@ -10,14 +10,17 @@ A Streamlit dashboard for analyzing order data from Google Sheets.
 
 ## Setup
 
-1. Clone this repository:
+1. Make sure you have python 3 installed
+   https://www.python.org/downloads/
+
+2. Clone this repository:
 
    ```
    git clone https://github.com/dwimnofan/orderan-fabron.git
    cd https://github.com/dwimnofan/orderan-fabron.git
    ```
 
-2. Create and activate a virtual environment:
+3. Create and activate a virtual environment:
 
    ```
    python3 -m venv .venv
@@ -29,7 +32,7 @@ A Streamlit dashboard for analyzing order data from Google Sheets.
    source .venv/bin/activate
    ```
 
-3. Install required packages:
+4. Install required packages:
    ```
    pip install streamlit pandas
    ```
