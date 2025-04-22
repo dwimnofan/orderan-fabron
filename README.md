@@ -17,7 +17,7 @@ A Streamlit dashboard for analyzing order data from Google Sheets.
 
    ```
    git clone https://github.com/dwimnofan/orderan-fabron.git
-   cd https://github.com/dwimnofan/orderan-fabron.git
+   cd orderan-fabron
    ```
 
 3. Create and activate a virtual environment:
