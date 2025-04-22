@@ -11,10 +11,6 @@ with st.spinner('Loading data from Google Sheets...'):
     url = f'https://docs.google.com/spreadsheets/d/{sheet_id}/export?format=csv&gid={gid}'
 
     df = pd.read_csv(url)
-    
-    # Display columns and sample data (temporary for development)
-    st.write("DataFrame Columns:", df.columns.tolist())
-    st.write("Sample Data (5 rows):", df.head())
 
     # Show data null
     with st.expander("View data null information"):
@@ -29,62 +25,9 @@ with st.spinner('Loading data from Google Sheets...'):
           .astype(int)
     )
 
-    # Create filter sidebar
-    st.sidebar.header("Filters")
-    
-    # Brand filter (selectbox)
-    # Assuming there's a 'Brand' column - adjust if your column has a different name
-    if 'Brand' in df.columns:
-        brand_options = ['All'] + sorted(df['Brand'].unique().tolist())
-        selected_brand = st.sidebar.selectbox("Select Brand:", brand_options)
-    else:
-        # Try to find a column that might contain brand information
-        potential_brand_cols = [col for col in df.columns if 'brand' in col.lower() or 'merk' in col.lower()]
-        if potential_brand_cols:
-            brand_col = potential_brand_cols[0]
-            brand_options = ['All'] + sorted(df[brand_col].unique().tolist())
-            selected_brand = st.sidebar.selectbox(f"Select {brand_col}:", brand_options)
-        else:
-            st.sidebar.warning("No brand column found. Please adjust the code.")
-            selected_brand = 'All'
-    
-    # Toko filter (checkbox)
-    # Assuming there's a 'Toko' column - adjust if your column has a different name
-    if 'Toko' in df.columns:
-        toko_options = sorted(df['Toko'].unique().tolist())
-        selected_toko = st.sidebar.multiselect("Select Toko:", toko_options, default=toko_options)
-    else:
-        # Try to find a column that might contain store information
-        potential_toko_cols = [col for col in df.columns if 'toko' in col.lower() or 'store' in col.lower()]
-        if potential_toko_cols:
-            toko_col = potential_toko_cols[0]
-            toko_options = sorted(df[toko_col].unique().tolist())
-            selected_toko = st.sidebar.multiselect(f"Select {toko_col}:", toko_options, default=toko_options)
-        else:
-            st.sidebar.warning("No toko column found. Please adjust the code.")
-            selected_toko = []
-    
-    # Apply filters to dataframe
-    filtered_df = df.copy()
-    
-    # Apply brand filter if 'All' is not selected
-    if selected_brand != 'All':
-        if 'Brand' in df.columns:
-            filtered_df = filtered_df[filtered_df['Brand'] == selected_brand]
-        elif potential_brand_cols:
-            filtered_df = filtered_df[filtered_df[brand_col] == selected_brand]
-    
-    # Apply toko filter if any selections are made
-    if selected_toko:
-        if 'Toko' in df.columns:
-            filtered_df = filtered_df[filtered_df['Toko'].isin(selected_toko)]
-        elif potential_toko_cols:
-            filtered_df = filtered_df[filtered_df[toko_col].isin(selected_toko)]
-    
-    # Use filtered DataFrame for analysis
-    # Calculate total per category using filtered data
+    # Calculate total per category
     total_per_catatan = (
-        filtered_df
+        df
          .groupby('Catatan')['Harga_num']
          .sum()
          .reset_index(name='Harga_total')
@@ -100,7 +43,7 @@ with st.spinner('Loading data from Google Sheets...'):
 
     # raw data
     st.subheader("Raw Data")
-    st.dataframe(filtered_df)
+    st.dataframe(df)
     
     # total per category
     st.subheader("Total per Category")
